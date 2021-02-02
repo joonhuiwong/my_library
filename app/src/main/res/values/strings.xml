@@ -4,7 +4,7 @@
     <string name="book_image">Book Image</string>
     <string name="favorite_books_label">Favorite Books</string>
     <string name="currently_reading_books_label">Currently Reading Books</string>
-    <string name="want_to_read_books_label">Want to Read Books</string>
+    <string name="want_to_read_books_label">Wishlist</string>
     <string name="already_read_books_label">Already Read Books</string>
     <string name="all_books_label">All Books</string>
     <string name="expand">Expand</string>
@@ -20,12 +20,12 @@
     <string name="your_favorites_menu_label">Your Favorites</string>
     <string name="about">About</string>
     <string name="footer_copyright">Developed by Joon Hui</string>
-    <string name="add_to_reading_button_label">Reading</string>
+    <string name="add_to_reading_button_label">Add to Reading List</string>
     <string name="add_to_wishlist_button_label">Add to Wishlist</string>
     <string name="add_to_already_read_button_label">Already Read</string>
     <string name="add_to_favorites_button_label">Add To Favorites</string>
     <string name="book_name_label">Book Name:</string>
-    <string name="book_name_text">The Wolf of Lala Wonderland</string>
+    <string name="book_name_text">This is my Book Name</string>
     <string name="author_sample_text">John Doe</string>
     <string name="pages_label">Pages</string>
     <string name="pages_text">150</string>
