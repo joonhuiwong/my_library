@@ -28,7 +28,7 @@ public class AllBooksActivity extends AppCompatActivity {
         allBooksRecyclerView.setAdapter(adapter);
         allBooksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter.setBooks(Utils.getAllBooks());
+        adapter.setBooks(Utils.getInstance(this).getAllBooks());
     }
 
     @Override

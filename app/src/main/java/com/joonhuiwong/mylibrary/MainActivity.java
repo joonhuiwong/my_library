@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Initialize Utils (prevent NPE)
-        Utils.getInstance();
+        Utils.getInstance(this);
     }
 
     /**
