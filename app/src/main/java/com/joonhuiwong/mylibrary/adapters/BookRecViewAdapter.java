@@ -1,4 +1,4 @@
-package com.joonhuiwong.mylibrary;
+package com.joonhuiwong.mylibrary.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.TransitionManager;
 
 import com.bumptech.glide.Glide;
+import com.joonhuiwong.mylibrary.R;
+import com.joonhuiwong.mylibrary.activities.AllBooksActivity;
+import com.joonhuiwong.mylibrary.activities.AlreadyReadBookActivity;
+import com.joonhuiwong.mylibrary.activities.BookActivity;
+import com.joonhuiwong.mylibrary.activities.CurrentlyReadingBookActivity;
+import com.joonhuiwong.mylibrary.activities.FavoriteBookActivity;
+import com.joonhuiwong.mylibrary.activities.WantToReadBookActivity;
+import com.joonhuiwong.mylibrary.models.Book;
+import com.joonhuiwong.mylibrary.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -75,7 +84,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
                         builder.setPositiveButton("Yes", (dialog, which) -> {
                             if (Utils.getInstance(mContext).removeFromAlreadyRead(books.get(position))) {
                                 Toast.makeText(mContext, "Book removed", Toast.LENGTH_SHORT).show();
-                                notifyDataSetChanged();
+                                notifyDataSetChanged(); //TODO: Enhance with Callback Interface after learning about it.
                             } else {
                                 Toast.makeText(mContext, "Something wrong happened, Please try again", Toast.LENGTH_SHORT).show();
                             }
@@ -94,7 +103,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
                         builder.setPositiveButton("Yes", (dialog, which) -> {
                             if (Utils.getInstance(mContext).removeFromCurrentlyReading(books.get(position))) {
                                 Toast.makeText(mContext, "Book removed", Toast.LENGTH_SHORT).show();
-                                notifyDataSetChanged();
+                                notifyDataSetChanged(); //TODO: Enhance with Callback Interface after learning about it.
                             } else {
                                 Toast.makeText(mContext, "Something wrong happened, Please try again", Toast.LENGTH_SHORT).show();
                             }
@@ -113,7 +122,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
                         builder.setPositiveButton("Yes", (dialog, which) -> {
                             if (Utils.getInstance(mContext).removeFromFavorite(books.get(position))) {
                                 Toast.makeText(mContext, "Book removed", Toast.LENGTH_SHORT).show();
-                                notifyDataSetChanged();
+                                notifyDataSetChanged(); //TODO: Enhance with Callback Interface after learning about it.
                             } else {
                                 Toast.makeText(mContext, "Something wrong happened, Please try again", Toast.LENGTH_SHORT).show();
                             }
@@ -132,7 +141,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
                         builder.setPositiveButton("Yes", (dialog, which) -> {
                             if (Utils.getInstance(mContext).removeFromWantToRead(books.get(position))) {
                                 Toast.makeText(mContext, "Book removed", Toast.LENGTH_SHORT).show();
-                                notifyDataSetChanged();
+                                notifyDataSetChanged(); //TODO: Enhance with Callback Interface after learning about it.
                             } else {
                                 Toast.makeText(mContext, "Something wrong happened, Please try again", Toast.LENGTH_SHORT).show();
                             }

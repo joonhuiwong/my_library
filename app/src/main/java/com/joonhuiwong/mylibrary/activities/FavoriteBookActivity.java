@@ -1,4 +1,4 @@
-package com.joonhuiwong.mylibrary;
+package com.joonhuiwong.mylibrary.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,23 +9,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class WantToReadBookActivity extends AppCompatActivity {
+import com.joonhuiwong.mylibrary.R;
+import com.joonhuiwong.mylibrary.adapters.BookRecViewAdapter;
+import com.joonhuiwong.mylibrary.utils.Utils;
 
-    public static final String ACTIVITY_NAME = "wantToReadBooks";
+public class FavoriteBookActivity extends AppCompatActivity {
+
+    public static final String ACTIVITY_NAME = "favouriteBooks";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_want_to_read_book);
+        setContentView(R.layout.activity_favorite_book);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView recyclerView = findViewById(R.id.wantToReadBookRecView);
+        RecyclerView recyclerView = findViewById(R.id.favoriteBookRecView);
         BookRecViewAdapter adapter = new BookRecViewAdapter(this, ACTIVITY_NAME);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter.setBooks(Utils.getInstance(this).getWantToReadBooks());
+        adapter.setBooks(Utils.getInstance(this).getFavoriteBooks());
     }
 
     @Override

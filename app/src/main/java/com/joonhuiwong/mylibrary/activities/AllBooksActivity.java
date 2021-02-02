@@ -1,4 +1,4 @@
-package com.joonhuiwong.mylibrary;
+package com.joonhuiwong.mylibrary.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -7,6 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.joonhuiwong.mylibrary.R;
+import com.joonhuiwong.mylibrary.adapters.BookRecViewAdapter;
+import com.joonhuiwong.mylibrary.utils.Utils;
 
 public class AllBooksActivity extends AppCompatActivity {
 

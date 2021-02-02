@@ -1,4 +1,4 @@
-package com.joonhuiwong.mylibrary;
+package com.joonhuiwong.mylibrary.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.joonhuiwong.mylibrary.R;
+import com.joonhuiwong.mylibrary.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 

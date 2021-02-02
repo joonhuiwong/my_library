@@ -1,4 +1,4 @@
-package com.joonhuiwong.mylibrary;
+package com.joonhuiwong.mylibrary.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.joonhuiwong.mylibrary.R;
+import com.joonhuiwong.mylibrary.models.Book;
+import com.joonhuiwong.mylibrary.utils.Utils;
 
 import java.util.ArrayList;
 

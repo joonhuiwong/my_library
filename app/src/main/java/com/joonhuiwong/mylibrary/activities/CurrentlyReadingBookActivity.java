@@ -1,4 +1,4 @@
-package com.joonhuiwong.mylibrary;
+package com.joonhuiwong.mylibrary.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,23 +9,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AlreadyReadBookActivity extends AppCompatActivity {
+import com.joonhuiwong.mylibrary.R;
+import com.joonhuiwong.mylibrary.adapters.BookRecViewAdapter;
+import com.joonhuiwong.mylibrary.utils.Utils;
 
-    public static final String ACTIVITY_NAME = "alreadyReadBooks";
+public class CurrentlyReadingBookActivity extends AppCompatActivity {
+
+    public static final String ACTIVITY_NAME = "currentlyReadingBooks";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_already_read_book);
+        setContentView(R.layout.activity_currently_reading_book);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView recyclerView = findViewById(R.id.alreadyReadBookRecView);
+        RecyclerView recyclerView = findViewById(R.id.currentlyReadingBookRecView);
         BookRecViewAdapter adapter = new BookRecViewAdapter(this, ACTIVITY_NAME);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter.setBooks(Utils.getInstance(this).getAlreadyReadBooks());
+        adapter.setBooks(Utils.getInstance(this).getCurrentlyReadingBooks());
     }
 
     @Override
