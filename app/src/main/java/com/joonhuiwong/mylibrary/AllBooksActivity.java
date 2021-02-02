@@ -1,7 +1,9 @@
 package com.joonhuiwong.mylibrary;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +20,8 @@ public class AllBooksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_books);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         adapter = new BookRecViewAdapter(this, ACTIVITY_NAME);
         allBooksRecyclerView = findViewById(R.id.allBooksRecyclerView);
 
@@ -25,5 +29,13 @@ public class AllBooksActivity extends AppCompatActivity {
         allBooksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter.setBooks(Utils.getAllBooks());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
