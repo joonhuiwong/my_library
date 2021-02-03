@@ -5,19 +5,25 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.joonhuiwong.mylibrary.R;
-import com.joonhuiwong.mylibrary.adapters.BookRecViewAdapter;
-import com.joonhuiwong.mylibrary.utils.Utils;
+import com.joonhuiwong.mylibrary.adapters.BookAdapter;
+import com.joonhuiwong.mylibrary.db.entity.BookEntity;
+import com.joonhuiwong.mylibrary.viewmodel.BookViewModel;
+
+import java.util.List;
 
 public class AllBooksActivity extends AppCompatActivity {
 
     public static final String ACTIVITY_NAME = "allBooks";
 
     private RecyclerView allBooksRecyclerView;
-    private BookRecViewAdapter adapter;
+    private BookAdapter adapter;
+    private BookViewModel bookViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +32,20 @@ public class AllBooksActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        adapter = new BookRecViewAdapter(this, ACTIVITY_NAME);
+        adapter = new BookAdapter(this, ACTIVITY_NAME);
         allBooksRecyclerView = findViewById(R.id.allBooksRecyclerView);
 
         allBooksRecyclerView.setAdapter(adapter);
-        allBooksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        allBooksRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        adapter.setBooks(Utils.getInstance(this).getAllBooks());
+        bookViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(BookViewModel.class);
+        bookViewModel.getAllBooks().observe(this, new Observer<List<BookEntity>>() {
+            @Override
+            public void onChanged(List<BookEntity> books) {
+                adapter.setBooks(books);
+            }
+        });
+
     }
 
     @Override

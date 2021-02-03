@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.joonhuiwong.mylibrary.R;
-import com.joonhuiwong.mylibrary.adapters.BookRecViewAdapter;
-import com.joonhuiwong.mylibrary.utils.Utils;
+import com.joonhuiwong.mylibrary.adapters.BookAdapter;
 
 public class FavoriteBookActivity extends AppCompatActivity {
 
@@ -25,11 +24,11 @@ public class FavoriteBookActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         RecyclerView recyclerView = findViewById(R.id.favoriteBookRecView);
-        BookRecViewAdapter adapter = new BookRecViewAdapter(this, ACTIVITY_NAME);
+        BookAdapter adapter = new BookAdapter(this, ACTIVITY_NAME);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter.setBooks(Utils.getInstance(this).getFavoriteBooks());
+        //adapter.setBooks(Utils.getInstance(this).getFavoriteBooks());
     }
 
     @Override

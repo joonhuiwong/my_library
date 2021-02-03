@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.TransitionManager;
@@ -20,36 +18,33 @@ import androidx.transition.TransitionManager;
 import com.bumptech.glide.Glide;
 import com.joonhuiwong.mylibrary.R;
 import com.joonhuiwong.mylibrary.activities.AllBooksActivity;
-import com.joonhuiwong.mylibrary.activities.AlreadyReadBookActivity;
 import com.joonhuiwong.mylibrary.activities.BookActivity;
-import com.joonhuiwong.mylibrary.activities.CurrentlyReadingBookActivity;
-import com.joonhuiwong.mylibrary.activities.FavoriteBookActivity;
-import com.joonhuiwong.mylibrary.activities.WantToReadBookActivity;
-import com.joonhuiwong.mylibrary.models.Book;
-import com.joonhuiwong.mylibrary.utils.Utils;
+import com.joonhuiwong.mylibrary.db.entity.BookEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.ViewHolder> {
-    private static final String TAG = "BookRecViewAdapter";
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
+    private static final String TAG = "BookAdapter";
     private final Context mContext;
     private final String parentActivity;
-    private ArrayList<Book> books = new ArrayList<>();
+    private List<BookEntity> books = new ArrayList<>();
 
-    public BookRecViewAdapter(Context mContext, String parentActivity) {
+    public BookAdapter(Context mContext, String parentActivity) {
         this.mContext = mContext;
         this.parentActivity = parentActivity;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_book, parent, false);
-        return new ViewHolder(view);
+    public BookHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_book, parent, false);
+        return new BookHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BookHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: Called");
         holder.textBookName.setText(books.get(position).getName());
 
@@ -76,6 +71,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
                 case AllBooksActivity.ACTIVITY_NAME:
                     holder.btnDelete.setVisibility(View.GONE);
                     break;
+                    /*
                 case AlreadyReadBookActivity.ACTIVITY_NAME:
                     holder.btnDelete.setVisibility(View.VISIBLE);
                     holder.btnDelete.setOnClickListener(v -> {
@@ -152,6 +148,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
                         builder.create().show();
                     });
                     break;
+                     */
             }
         } else {
             TransitionManager.beginDelayedTransition(holder.parent);
@@ -165,12 +162,12 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
         return books.size();
     }
 
-    public void setBooks(ArrayList<Book> books) {
+    public void setBooks(List<BookEntity> books) {
         this.books = books;
-        notifyDataSetChanged();
+        notifyDataSetChanged(); //TODO Can replace with something better when more knowledgeable
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class BookHolder extends RecyclerView.ViewHolder {
         private final CardView parent;
         private final ImageView imgBook;
         private final ImageView downArrow;
@@ -182,7 +179,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
         private final TextView txtAuthor;
         private final TextView txtDescription;
 
-        public ViewHolder(@NonNull View itemView) {
+        public BookHolder(@NonNull View itemView) {
             super(itemView);
 
             parent = itemView.findViewById(R.id.parent);
@@ -198,13 +195,13 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
             txtDescription = itemView.findViewById(R.id.txtShortDescription);
 
             downArrow.setOnClickListener(v -> {
-                Book book = books.get(getAdapterPosition());
+                BookEntity book = books.get(getAdapterPosition());
                 book.setExpanded(!book.isExpanded());
                 notifyItemChanged(getAdapterPosition());
             });
 
             upArrow.setOnClickListener(v -> {
-                Book book = books.get(getAdapterPosition());
+                BookEntity book = books.get(getAdapterPosition());
                 book.setExpanded(!book.isExpanded());
                 notifyItemChanged(getAdapterPosition());
             });

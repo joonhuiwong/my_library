@@ -10,13 +10,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.joonhuiwong.mylibrary.R;
-import com.joonhuiwong.mylibrary.models.Book;
-import com.joonhuiwong.mylibrary.utils.Utils;
+import com.joonhuiwong.mylibrary.db.entity.BookEntity;
+import com.joonhuiwong.mylibrary.viewmodel.BookViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class BookActivity extends AppCompatActivity {
 
@@ -25,6 +27,8 @@ public class BookActivity extends AppCompatActivity {
     private TextView txtAuthorFull, txtBookNameFull, txtPagesFull, txtShortDescriptionFull, txtLongDescriptionFull;
     private Button btnAddToCurrentlyReading, btnAddToAlreadyRead, btnAddToWantToRead, btnAddToFavorites;
     private ImageView imgBookFull;
+
+    private BookViewModel bookViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +43,47 @@ public class BookActivity extends AppCompatActivity {
         if (null != intent) {
             int bookId = intent.getIntExtra(BOOK_ID_KEY, -1);
             if (bookId != -1) {
-                Book incomingBook = Utils.getInstance(this).getBookById(bookId);
+                bookViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(BookViewModel.class);
+                bookViewModel.getAllBooks().observe(this, new Observer<List<BookEntity>>() {
+                    @Override
+                    public void onChanged(List<BookEntity> books) {
+                        BookEntity incomingBook = getIncomingBook(bookId, books);
+                        if (incomingBook != null) {
+                            setData(incomingBook);
+                            setTitle(incomingBook.getName());
+
+                            handleAlreadyRead(incomingBook);
+                            //handleWantToReadBooks(incomingBook);
+                            //handleCurrentlyReadingBooks(incomingBook);
+                            //handleFavoriteBooks(incomingBook);
+                        } else {
+                            Toast.makeText(BookActivity.this, "Failed to Load Book for some reason. Try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                /*
                 if (incomingBook != null) {
                     setData(incomingBook);
 
-                    handleAlreadyRead(incomingBook);
-                    handleWantToReadBooks(incomingBook);
-                    handleCurrentlyReadingBooks(incomingBook);
-                    handleFavoriteBooks(incomingBook);
+                    //handleAlreadyRead(incomingBook);
+                    //handleWantToReadBooks(incomingBook);
+                    //handleCurrentlyReadingBooks(incomingBook);
+                    //handleFavoriteBooks(incomingBook);
 
                     this.setTitle(incomingBook.getName());
                 }
+                */
             }
         }
+    }
+
+    private BookEntity getIncomingBook(int bookId, List<BookEntity> books) {
+        for (BookEntity b : books) {
+            if (b.getId() == bookId) {
+                return b;
+            }
+        }
+        return null;
     }
 
     /**
@@ -60,31 +92,26 @@ public class BookActivity extends AppCompatActivity {
      *
      * @param book Book Object
      */
-    private void handleAlreadyRead(Book book) {
-        ArrayList<Book> alreadyReadBooks = Utils.getInstance(this).getAlreadyReadBooks();
-        boolean existInAlreadyReadBooks = false;
-        for (Book b : alreadyReadBooks) {
-            if (b.getId() == book.getId()) {
-                existInAlreadyReadBooks = true;
-                break;
-            }
-        }
-
-        if (existInAlreadyReadBooks) {
-            btnAddToAlreadyRead.setEnabled(false);
+    private void handleAlreadyRead(BookEntity book) {
+        //TODO: Convert these methods to RoomDatabase
+        /*
+        if (exists) {
+            btnAddToWantToRead.setEnabled(false);
         } else {
-            btnAddToAlreadyRead.setOnClickListener(v -> {
-                if (Utils.getInstance(BookActivity.this).addToAlreadyRead(book)) {
-                    Toast.makeText(BookActivity.this, "Book Added to Already Read", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(BookActivity.this, AlreadyReadBookActivity.class);
+            btnAddToWantToRead.setOnClickListener(v -> {
+                if (Utils.getInstance(BookActivity.this).addToWantToRead(book)) {
+                    Toast.makeText(BookActivity.this, "Book Added to Want to Read", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(BookActivity.this, WantToReadBookActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(BookActivity.this, "Something wrong happened, try again", Toast.LENGTH_SHORT).show();
                 }
             });
         }
+         */
     }
 
+    /*
     private void handleWantToReadBooks(Book book) {
         ArrayList<Book> books = Utils.getInstance(this).getWantToReadBooks();
         boolean exists = false;
@@ -159,8 +186,9 @@ public class BookActivity extends AppCompatActivity {
             });
         }
     }
+     */
 
-    private void setData(Book book) {
+    private void setData(BookEntity book) {
         txtBookNameFull.setText(book.getName());
         txtAuthorFull.setText(book.getAuthor());
         txtPagesFull.setText(String.valueOf(book.getPages()));

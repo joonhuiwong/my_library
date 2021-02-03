@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.joonhuiwong.mylibrary.R;
-import com.joonhuiwong.mylibrary.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         btnAbout.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(getString(R.string.app_name));
-            builder.setMessage("Designed by Joon Hui Wong following the Course Material by Meisam at meiCode.org\n" +
+            builder.setMessage("Designed by Joon Hui Wong following and inspired by free guides & courses online.\n" +
                     "This application is purely for educational purposes.");
             builder.setPositiveButton("Github", (dialog, which) -> {
                 Intent intent = new Intent(MainActivity.this, WebsiteActivity.class);
@@ -42,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
             builder.setCancelable(true);
             builder.create().show();
         });
-
-        // Initialize Utils (prevent NPE)
-        Utils.getInstance(this);
     }
 
     /**
@@ -62,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializing the Views of the Activity that are interactable
+     * Initializing the Views of the Activity that are interact-able
      */
     private void initViews() {
         btnAllBooks = findViewById(R.id.btnAllBooks);

@@ -24,9 +24,9 @@ public class WebsiteActivity extends AppCompatActivity {
             webView = findViewById(R.id.webView);
             webView.loadUrl(url);
             webView.setWebViewClient(new WebViewClient());
+            // Security Risk but a lot of websites need JS
             webView.getSettings().setJavaScriptEnabled(true);
         }
-
 
     }
 
