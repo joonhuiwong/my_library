@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".activities.AddBookActivity">
+
+    <EditText
+        android:id="@+id/editTextBookName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Book Name (required)"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Author (required)"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextPages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pages (required)"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editTextShortDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Short Description"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/editTextLongDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Long Description"
+        android:inputType="textMultiLine" />
+
+</LinearLayout>
