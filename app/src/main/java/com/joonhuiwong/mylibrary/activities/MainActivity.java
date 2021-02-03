@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.joonhuiwong.mylibrary.R;
+import com.joonhuiwong.mylibrary.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
             builder.setCancelable(true);
             builder.create().show();
         });
+
+        Utils.getInstance();
     }
 
     /**
