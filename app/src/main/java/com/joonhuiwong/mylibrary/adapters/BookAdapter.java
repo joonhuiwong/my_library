@@ -48,10 +48,17 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
         Log.d(TAG, "onBindViewHolder: Called");
         holder.textBookName.setText(books.get(position).getName());
 
-        Glide.with(mContext)
-                .asBitmap()
-                .load(books.get(position).getImageUrl())
-                .into(holder.imgBook);
+        if (books.get(position).getImageUrl().isEmpty()) {
+            Glide.with(mContext)
+                    .asBitmap()
+                    .load(R.mipmap.booklogo_mini)
+                    .into(holder.imgBook);
+        } else {
+            Glide.with(mContext)
+                    .asBitmap()
+                    .load(books.get(position).getImageUrl())
+                    .into(holder.imgBook);
+        }
 
         holder.parent.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, BookActivity.class);

@@ -194,10 +194,18 @@ public class BookActivity extends AppCompatActivity {
         txtPagesFull.setText(String.valueOf(book.getPages()));
         txtShortDescriptionFull.setText(book.getShortDesc());
         txtLongDescriptionFull.setText(book.getLongDesc());
-        Glide.with(this)
-                .asBitmap()
-                .load(book.getImageUrl())
-                .into(imgBookFull);
+
+        if (book.getImageUrl().isEmpty()) {
+            Glide.with(this)
+                    .asBitmap()
+                    .load(R.mipmap.booklogo)
+                    .into(imgBookFull);
+        } else {
+            Glide.with(this)
+                    .asBitmap()
+                    .load(book.getImageUrl())
+                    .into(imgBookFull);
+        }
     }
 
     private void initViews() {
