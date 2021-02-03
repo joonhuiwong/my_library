@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyLibrary">
+        <activity
+            android:name=".activities.AddBookActivity"
+            android:label="Add New Book"
+            android:parentActivityName=".activities.AllBooksActivity" />
         <activity android:name=".activities.WebsiteActivity" />
         <activity
             android:name=".activities.FavoriteBookActivity"
