@@ -22,6 +22,7 @@ public class WantToReadBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_want_to_read_book);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
         RecyclerView recyclerView = findViewById(R.id.wantToReadBookRecView);
         BookAdapter adapter = new BookAdapter(this, ACTIVITY_NAME);

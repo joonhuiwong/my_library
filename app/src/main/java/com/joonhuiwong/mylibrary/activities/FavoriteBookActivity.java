@@ -22,6 +22,7 @@ public class FavoriteBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite_book);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
         RecyclerView recyclerView = findViewById(R.id.favoriteBookRecView);
         BookAdapter adapter = new BookAdapter(this, ACTIVITY_NAME);
