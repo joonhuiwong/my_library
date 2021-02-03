@@ -16,3 +16,11 @@ The references I used are below:
 - https://www.youtube.com/watch?v=RcSHAkpwXAQ
 
 (A crash course to Android Development, which this practice application is based on)
+
+For Room Database Reference:
+- https://www.youtube.com/playlist?list=PLrnPJCHvNZuDihTpkRs6SpZhqgBqPU118
+- https://developer.android.com/codelabs/android-room-with-a-view
+- https://developer.android.com/training/data-storage/room
+- https://developer.android.com/codelabs/android-training-livedata-viewmodel#0
+- https://github.com/android/architecture-components-samples/tree/main/BasicSample
+
