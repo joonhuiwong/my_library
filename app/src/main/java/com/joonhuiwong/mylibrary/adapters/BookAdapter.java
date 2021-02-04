@@ -54,6 +54,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
             Glide.with(mContext)
                     .asBitmap()
                     .load(books.get(position).getImageUrl())
+                    .error(R.mipmap.booklogo)
                     .into(holder.imgBook);
         }
 
