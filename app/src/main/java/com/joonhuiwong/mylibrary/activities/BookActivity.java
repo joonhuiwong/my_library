@@ -244,6 +244,7 @@ public class BookActivity extends AppCompatActivity {
             Glide.with(this)
                     .asBitmap()
                     .load(book.getImageUrl())
+                    .error(R.mipmap.booklogo)
                     .into(imgBookFull);
         }
     }
