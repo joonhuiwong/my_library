@@ -15,11 +15,19 @@ public class BookViewModel extends AndroidViewModel {
 
     private final BookRepository repository;
     private final LiveData<List<BookEntity>> allBooks;
+    private final LiveData<List<BookEntity>> currentlyReadingBooks;
+    private final LiveData<List<BookEntity>> alreadyReadBooks;
+    private final LiveData<List<BookEntity>> wantToReadBooks;
+    private final LiveData<List<BookEntity>> favoriteBooks;
 
     public BookViewModel(@NonNull Application application) {
         super(application);
         repository = new BookRepository(application);
         allBooks = repository.getAllBooks();
+        currentlyReadingBooks = repository.getCurrentlyReadingBooks();
+        alreadyReadBooks = repository.getAlreadyReadBooks();
+        wantToReadBooks = repository.getWantToReadBooks();
+        favoriteBooks = repository.getFavoriteBooks();
     }
 
     public void insert(BookEntity book) {
@@ -46,12 +54,20 @@ public class BookViewModel extends AndroidViewModel {
         return allBooks;
     }
 
-    public LiveData<BookEntity> getBook(int bookId) {
-        return repository.getBook(bookId);
+    public LiveData<List<BookEntity>> getCurrentlyReadingBooks() {
+        return currentlyReadingBooks;
     }
 
-    public BookEntity getBookSync(int bookId) {
-        return repository.getBookSync(bookId);
+    public LiveData<List<BookEntity>> getAlreadyReadBooks() {
+        return alreadyReadBooks;
+    }
+
+    public LiveData<List<BookEntity>> getWantToReadBooks() {
+        return wantToReadBooks;
+    }
+
+    public LiveData<List<BookEntity>> getFavoriteBooks() {
+        return favoriteBooks;
     }
 
 }

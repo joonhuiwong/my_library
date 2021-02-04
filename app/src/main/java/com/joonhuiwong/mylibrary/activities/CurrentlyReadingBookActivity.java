@@ -6,15 +6,17 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.joonhuiwong.mylibrary.R;
 import com.joonhuiwong.mylibrary.adapters.BookAdapter;
+import com.joonhuiwong.mylibrary.viewmodel.BookViewModel;
 
 public class CurrentlyReadingBookActivity extends AppCompatActivity {
 
-    public static final String ACTIVITY_NAME = "currentlyReadingBooks";
+    private BookViewModel bookViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +24,14 @@ public class CurrentlyReadingBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_currently_reading_book);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
         RecyclerView recyclerView = findViewById(R.id.currentlyReadingBookRecView);
-        BookAdapter adapter = new BookAdapter(this, ACTIVITY_NAME);
+        BookAdapter adapter = new BookAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //adapter.setBooks(Utils.getInstance(this).getCurrentlyReadingBooks());
+        bookViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(BookViewModel.class);
+        bookViewModel.getCurrentlyReadingBooks().observe(this, books -> adapter.setBooks(books));
     }
 
     @Override
