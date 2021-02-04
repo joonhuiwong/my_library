@@ -17,6 +17,11 @@ public class BookEntity {
 
     private boolean isExpanded;
 
+    private boolean isCurrentlyReading;
+    private boolean isAlreadyRead;
+    private boolean isWantToRead;
+    private boolean isFavorite;
+
     public BookEntity(String name, String author, int pages, String imageUrl, String shortDesc, String longDesc) {
         this.name = name;
         this.author = author;
@@ -24,7 +29,13 @@ public class BookEntity {
         this.imageUrl = imageUrl;
         this.shortDesc = shortDesc;
         this.longDesc = longDesc;
+
         this.isExpanded = false;
+
+        this.isCurrentlyReading = false;
+        this.isAlreadyRead = false;
+        this.isWantToRead = false;
+        this.isFavorite = false;
     }
 
     public int getId() {
@@ -91,6 +102,38 @@ public class BookEntity {
         isExpanded = expanded;
     }
 
+    public boolean isCurrentlyReading() {
+        return isCurrentlyReading;
+    }
+
+    public void setCurrentlyReading(boolean currentlyReading) {
+        isCurrentlyReading = currentlyReading;
+    }
+
+    public boolean isAlreadyRead() {
+        return isAlreadyRead;
+    }
+
+    public void setAlreadyRead(boolean alreadyRead) {
+        isAlreadyRead = alreadyRead;
+    }
+
+    public boolean isWantToRead() {
+        return isWantToRead;
+    }
+
+    public void setWantToRead(boolean wantToRead) {
+        isWantToRead = wantToRead;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     @Override
     public String toString() {
         return "BookEntity{" +
@@ -102,6 +145,10 @@ public class BookEntity {
                 ", shortDesc='" + shortDesc + '\'' +
                 ", longDesc='" + longDesc + '\'' +
                 ", isExpanded=" + isExpanded +
+                ", isCurrentlyReading=" + isCurrentlyReading +
+                ", isAlreadyRead=" + isAlreadyRead +
+                ", isWantToRead=" + isWantToRead +
+                ", isFavorite=" + isFavorite +
                 '}';
     }
 }

@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,13 +21,9 @@ import com.joonhuiwong.mylibrary.adapters.BookAdapter;
 import com.joonhuiwong.mylibrary.db.entity.BookEntity;
 import com.joonhuiwong.mylibrary.viewmodel.BookViewModel;
 
-import java.util.List;
-
 public class AllBooksActivity extends AppCompatActivity {
 
-    public static final int ADD_NOTE_REQUEST = 1;
-
-    public static final String ACTIVITY_NAME = "allBooks";
+    public static final int ADD_BOOK_REQUEST = 1;
 
     private RecyclerView allBooksRecyclerView;
     private BookAdapter adapter;
@@ -40,47 +34,40 @@ public class AllBooksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_books);
 
+        // Action Bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
+        // FAB
         FloatingActionButton fabAddBook = findViewById(R.id.fab_add_book);
-        fabAddBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AllBooksActivity.this, AddBookActivity.class);
-                startActivityForResult(intent, ADD_NOTE_REQUEST);
-            }
+        fabAddBook.setOnClickListener(v -> {
+            Intent intent = new Intent(AllBooksActivity.this, AddEditBookActivity.class);
+            startActivityForResult(intent, ADD_BOOK_REQUEST);
         });
 
-        adapter = new BookAdapter(this, ACTIVITY_NAME);
+        // Recycler View
+        adapter = new BookAdapter(this);
         allBooksRecyclerView = findViewById(R.id.allBooksRecyclerView);
-
         allBooksRecyclerView.setAdapter(adapter);
         allBooksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // View Model
         bookViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(BookViewModel.class);
-        bookViewModel.getAllBooks().observe(this, new Observer<List<BookEntity>>() {
-            @Override
-            public void onChanged(List<BookEntity> books) {
-                adapter.setBooks(books);
-            }
-        });
-
+        bookViewModel.getAllBooks().observe(this, books -> adapter.setBooks(books));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ADD_NOTE_REQUEST && resultCode == RESULT_OK) {
-            String bookName = data.getStringExtra(AddBookActivity.EXTRA_BOOK_NAME);
-            String author = data.getStringExtra(AddBookActivity.EXTRA_AUTHOR);
-            int pages = data.getIntExtra(AddBookActivity.EXTRA_PAGES, -1);
-            String shortDescription = data.getStringExtra(AddBookActivity.EXTRA_SHORT_DESCRIPTION);
-            String longDescription = data.getStringExtra(AddBookActivity.EXTRA_LONG_DESCRIPTION);
-            String imageUrl = ""; //TODO: Implement this
+        if (requestCode == ADD_BOOK_REQUEST && resultCode == RESULT_OK) {
+            String bookName = data.getStringExtra(AddEditBookActivity.EXTRA_BOOK_NAME);
+            String author = data.getStringExtra(AddEditBookActivity.EXTRA_AUTHOR);
+            int pages = data.getIntExtra(AddEditBookActivity.EXTRA_PAGES, -1);
+            String shortDescription = data.getStringExtra(AddEditBookActivity.EXTRA_SHORT_DESCRIPTION);
+            String longDescription = data.getStringExtra(AddEditBookActivity.EXTRA_LONG_DESCRIPTION);
+            String imageUrl = data.getStringExtra(AddEditBookActivity.EXTRA_IMAGE_URL);
 
-            BookEntity book = new BookEntity(bookName, author, pages, "", shortDescription, longDescription);
+            BookEntity book = new BookEntity(bookName, author, pages, imageUrl, shortDescription, longDescription);
             bookViewModel.insert(book);
 
             Toast.makeText(this, "Book added", Toast.LENGTH_SHORT).show();

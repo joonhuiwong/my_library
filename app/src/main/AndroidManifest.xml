@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyLibrary">
         <activity
-            android:name=".activities.AddBookActivity"
+            android:name=".activities.AddEditBookActivity"
             android:label="@string/add_new_book_activity_label"
             android:parentActivityName=".activities.AllBooksActivity" />
         <activity android:name=".activities.WebsiteActivity" />

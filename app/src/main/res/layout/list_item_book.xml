@@ -85,17 +85,6 @@
                 android:contentDescription="@string/collapse"
                 android:src="@drawable/ic_up_arrow" />
 
-            <TextView
-                android:id="@+id/btnDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtShortDescription"
-                android:layout_marginEnd="7dp"
-                android:layout_toStartOf="@id/btnUpArrow"
-                android:text="@string/delete"
-                android:textColor="@color/pink"
-                android:visibility="gone" />
-
         </RelativeLayout>
 
     </RelativeLayout>

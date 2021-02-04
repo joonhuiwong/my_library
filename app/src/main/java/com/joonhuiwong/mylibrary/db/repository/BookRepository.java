@@ -14,15 +14,19 @@ public class BookRepository {
 
     private final BookDao bookDao;
     private final LiveData<List<BookEntity>> allBooks;
-    private LiveData<List<BookEntity>> currentlyReadingBooks;
-    private LiveData<List<BookEntity>> alreadyReadBooks;
-    private LiveData<List<BookEntity>> wantToReadBooks;
-    private LiveData<List<BookEntity>> favoriteBooks;
+    private final LiveData<List<BookEntity>> currentlyReadingBooks;
+    private final LiveData<List<BookEntity>> alreadyReadBooks;
+    private final LiveData<List<BookEntity>> wantToReadBooks;
+    private final LiveData<List<BookEntity>> favoriteBooks;
 
     public BookRepository(Application application) {
         BookDatabase database = BookDatabase.getInstance(application);
         bookDao = database.bookDao();
         allBooks = bookDao.getAllBooks();
+        currentlyReadingBooks = bookDao.getAllCurrentlyReadingBooks();
+        alreadyReadBooks = bookDao.getAllAlreadyReadBooks();
+        wantToReadBooks = bookDao.getAllWantToReadBooks();
+        favoriteBooks = bookDao.getAllFavoriteBooks();
     }
 
     public void insert(BookEntity book) {
@@ -43,6 +47,22 @@ public class BookRepository {
 
     public LiveData<List<BookEntity>> getAllBooks() {
         return allBooks;
+    }
+
+    public LiveData<List<BookEntity>> getCurrentlyReadingBooks() {
+        return currentlyReadingBooks;
+    }
+
+    public LiveData<List<BookEntity>> getAlreadyReadBooks() {
+        return alreadyReadBooks;
+    }
+
+    public LiveData<List<BookEntity>> getWantToReadBooks() {
+        return wantToReadBooks;
+    }
+
+    public LiveData<List<BookEntity>> getFavoriteBooks() {
+        return favoriteBooks;
     }
 
     public void deleteBookById(int bookId) {

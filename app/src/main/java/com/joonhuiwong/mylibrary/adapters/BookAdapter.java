@@ -17,7 +17,6 @@ import androidx.transition.TransitionManager;
 
 import com.bumptech.glide.Glide;
 import com.joonhuiwong.mylibrary.R;
-import com.joonhuiwong.mylibrary.activities.AllBooksActivity;
 import com.joonhuiwong.mylibrary.activities.BookActivity;
 import com.joonhuiwong.mylibrary.db.entity.BookEntity;
 
@@ -27,12 +26,10 @@ import java.util.List;
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
     private static final String TAG = "BookAdapter";
     private final Context mContext;
-    private final String parentActivity;
     private List<BookEntity> books = new ArrayList<>();
 
-    public BookAdapter(Context mContext, String parentActivity) {
+    public BookAdapter(Context mContext) {
         this.mContext = mContext;
-        this.parentActivity = parentActivity;
     }
 
     @NonNull
@@ -60,6 +57,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
                     .into(holder.imgBook);
         }
 
+
         holder.parent.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, BookActivity.class);
             intent.putExtra(BookActivity.BOOK_ID_KEY, books.get(position).getId());
@@ -73,90 +71,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
             TransitionManager.beginDelayedTransition(holder.parent);
             holder.expandedRelativeLayout.setVisibility(View.VISIBLE);
             holder.downArrow.setVisibility(View.GONE);
-
-            switch (parentActivity) {
-                case AllBooksActivity.ACTIVITY_NAME:
-                    holder.btnDelete.setVisibility(View.GONE);
-                    break;
-                    /*
-                case AlreadyReadBookActivity.ACTIVITY_NAME:
-                    holder.btnDelete.setVisibility(View.VISIBLE);
-                    holder.btnDelete.setOnClickListener(v -> {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setMessage("Are you sure you want to delete " + books.get(position).getName() + "?");
-                        builder.setPositiveButton("Yes", (dialog, which) -> {
-                            if (Utils.getInstance(mContext).removeFromAlreadyRead(books.get(position))) {
-                                Toast.makeText(mContext, "Book removed", Toast.LENGTH_SHORT).show();
-                                notifyDataSetChanged(); //TODO: Enhance with Callback Interface after learning about it.
-                            } else {
-                                Toast.makeText(mContext, "Something wrong happened, Please try again", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        builder.setNegativeButton("No", (dialog, which) -> {
-
-                        });
-                        builder.create().show();
-                    });
-                    break;
-                case CurrentlyReadingBookActivity.ACTIVITY_NAME:
-                    holder.btnDelete.setVisibility(View.VISIBLE);
-                    holder.btnDelete.setOnClickListener(v -> {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setMessage("Are you sure you want to delete " + books.get(position).getName() + "?");
-                        builder.setPositiveButton("Yes", (dialog, which) -> {
-                            if (Utils.getInstance(mContext).removeFromCurrentlyReading(books.get(position))) {
-                                Toast.makeText(mContext, "Book removed", Toast.LENGTH_SHORT).show();
-                                notifyDataSetChanged(); //TODO: Enhance with Callback Interface after learning about it.
-                            } else {
-                                Toast.makeText(mContext, "Something wrong happened, Please try again", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        builder.setNegativeButton("No", (dialog, which) -> {
-
-                        });
-                        builder.create().show();
-                    });
-                    break;
-                case FavoriteBookActivity.ACTIVITY_NAME:
-                    holder.btnDelete.setVisibility(View.VISIBLE);
-                    holder.btnDelete.setOnClickListener(v -> {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setMessage("Are you sure you want to delete " + books.get(position).getName() + "?");
-                        builder.setPositiveButton("Yes", (dialog, which) -> {
-                            if (Utils.getInstance(mContext).removeFromFavorite(books.get(position))) {
-                                Toast.makeText(mContext, "Book removed", Toast.LENGTH_SHORT).show();
-                                notifyDataSetChanged(); //TODO: Enhance with Callback Interface after learning about it.
-                            } else {
-                                Toast.makeText(mContext, "Something wrong happened, Please try again", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        builder.setNegativeButton("No", (dialog, which) -> {
-
-                        });
-                        builder.create().show();
-                    });
-                    break;
-                case WantToReadBookActivity.ACTIVITY_NAME:
-                    holder.btnDelete.setVisibility(View.VISIBLE);
-                    holder.btnDelete.setOnClickListener(v -> {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setMessage("Are you sure you want to delete " + books.get(position).getName() + "?");
-                        builder.setPositiveButton("Yes", (dialog, which) -> {
-                            if (Utils.getInstance(mContext).removeFromWantToRead(books.get(position))) {
-                                Toast.makeText(mContext, "Book removed", Toast.LENGTH_SHORT).show();
-                                notifyDataSetChanged(); //TODO: Enhance with Callback Interface after learning about it.
-                            } else {
-                                Toast.makeText(mContext, "Something wrong happened, Please try again", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        builder.setNegativeButton("No", (dialog, which) -> {
-
-                        });
-                        builder.create().show();
-                    });
-                    break;
-                     */
-            }
         } else {
             TransitionManager.beginDelayedTransition(holder.parent);
             holder.expandedRelativeLayout.setVisibility(View.GONE);
@@ -174,17 +88,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
         notifyDataSetChanged(); //TODO Can replace with something better when more knowledgeable
     }
 
-    public BookEntity getBookAt(int position) {
-        return books.get(position);
-    }
-
     public class BookHolder extends RecyclerView.ViewHolder {
         private final CardView parent;
         private final ImageView imgBook;
         private final ImageView downArrow;
         private final ImageView upArrow;
         private final TextView textBookName;
-        private final TextView btnDelete;
 
         private final RelativeLayout expandedRelativeLayout;
         private final TextView txtAuthor;
@@ -196,8 +105,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
             parent = itemView.findViewById(R.id.parent);
             imgBook = itemView.findViewById(R.id.imgBook);
             textBookName = itemView.findViewById(R.id.textBookName);
-
-            btnDelete = itemView.findViewById(R.id.btnDelete);
 
             downArrow = itemView.findViewById(R.id.btnDownArrow);
             upArrow = itemView.findViewById(R.id.btnUpArrow);

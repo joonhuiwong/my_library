@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".activities.AddBookActivity">
+    tools:context=".activities.AddEditBookActivity">
 
     <EditText
         android:id="@+id/editTextBookName"
@@ -41,5 +41,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/long_description_text"
         android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/editTextImageUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/book_cover_url"
+        android:inputType="text" />
 
 </LinearLayout>

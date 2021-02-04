@@ -11,12 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joonhuiwong.mylibrary.R;
 import com.joonhuiwong.mylibrary.db.entity.BookEntity;
 import com.joonhuiwong.mylibrary.viewmodel.BookViewModel;
@@ -26,6 +27,7 @@ import java.util.List;
 public class BookActivity extends AppCompatActivity {
 
     public static final String BOOK_ID_KEY = "bookId";
+    public static final int EDIT_BOOK_REQUEST = 2;
 
     private TextView txtAuthorFull, txtBookNameFull, txtPagesFull, txtShortDescriptionFull, txtLongDescriptionFull;
     private Button btnAddToCurrentlyReading, btnAddToAlreadyRead, btnAddToWantToRead, btnAddToFavorites;
@@ -34,6 +36,7 @@ public class BookActivity extends AppCompatActivity {
     private BookViewModel bookViewModel;
 
     private int bookId = -1;
+    private BookEntity currentBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,29 @@ public class BookActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // FAB
+        FloatingActionButton fabEditBook = findViewById(R.id.fab_edit_book);
+        fabEditBook.setOnClickListener(v -> {
+            Intent intent = new Intent(BookActivity.this, AddEditBookActivity.class);
+            intent.putExtra(AddEditBookActivity.EXTRA_BOOK_ID, currentBook.getId());
+
+            intent.putExtra(AddEditBookActivity.EXTRA_BOOK_NAME, currentBook.getName());
+            intent.putExtra(AddEditBookActivity.EXTRA_AUTHOR, currentBook.getAuthor());
+            intent.putExtra(AddEditBookActivity.EXTRA_PAGES, currentBook.getPages());
+            intent.putExtra(AddEditBookActivity.EXTRA_SHORT_DESCRIPTION, currentBook.getShortDesc());
+            intent.putExtra(AddEditBookActivity.EXTRA_LONG_DESCRIPTION, currentBook.getLongDesc());
+
+            intent.putExtra(AddEditBookActivity.EXTRA_IMAGE_URL, currentBook.getImageUrl());
+
+            // Pass to maintain flags
+            intent.putExtra(AddEditBookActivity.EXTRA_IS_CURRENTLY_READING, currentBook.isCurrentlyReading());
+            intent.putExtra(AddEditBookActivity.EXTRA_IS_WANT_TO_READ, currentBook.isWantToRead());
+            intent.putExtra(AddEditBookActivity.EXTRA_IS_ALREADY_READ, currentBook.isAlreadyRead());
+            intent.putExtra(AddEditBookActivity.EXTRA_IS_FAVORITE, currentBook.isFavorite());
+
+            startActivityForResult(intent, EDIT_BOOK_REQUEST);
+        });
+
         initViews();
 
         Intent intent = getIntent();
@@ -49,33 +75,18 @@ public class BookActivity extends AppCompatActivity {
             this.bookId = intent.getIntExtra(BOOK_ID_KEY, -1);
             if (bookId != -1) {
                 bookViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(BookViewModel.class);
-                bookViewModel.getAllBooks().observe(this, new Observer<List<BookEntity>>() {
-                    @Override
-                    public void onChanged(List<BookEntity> books) {
-                        BookEntity incomingBook = getIncomingBook(bookId, books);
-                        if (incomingBook != null) {
-                            setData(incomingBook);
-                            setTitle(incomingBook.getName());
+                bookViewModel.getAllBooks().observe(this, books -> {
+                    currentBook = getIncomingBook(bookId, books);
+                    if (currentBook != null) {
+                        setData(currentBook);
+                        setTitle(currentBook.getName());
 
-                            handleAlreadyRead(incomingBook);
-                            //handleWantToReadBooks(incomingBook);
-                            //handleCurrentlyReadingBooks(incomingBook);
-                            //handleFavoriteBooks(incomingBook);
-                        }
+                        handleAlreadyRead(currentBook);
+                        handleWantToReadBooks(currentBook);
+                        handleCurrentlyReadingBooks(currentBook);
+                        handleFavoriteBooks(currentBook);
                     }
                 });
-                /*
-                if (incomingBook != null) {
-                    setData(incomingBook);
-
-                    //handleAlreadyRead(incomingBook);
-                    //handleWantToReadBooks(incomingBook);
-                    //handleCurrentlyReadingBooks(incomingBook);
-                    //handleFavoriteBooks(incomingBook);
-
-                    this.setTitle(incomingBook.getName());
-                }
-                */
             }
         }
     }
@@ -91,105 +102,131 @@ public class BookActivity extends AppCompatActivity {
 
     /**
      * Enable and Disable Button
-     * Add the book to Already Read Book ArrayList
+     * Add/Remove Flag the book object as Currently Reading (isCurrentlyReading)
      *
-     * @param book Book Object
+     * @param book BookEntity Object to flag
+     */
+    private void handleCurrentlyReadingBooks(BookEntity book) {
+        if (book.isCurrentlyReading()) {
+            btnAddToCurrentlyReading.setBackgroundColor(getResources().getColor(R.color.button_disabled_bg));
+            btnAddToCurrentlyReading.setTextColor(getResources().getColor(R.color.button_disabled_text));
+            btnAddToCurrentlyReading.setText(R.string.is_reading_button_label);
+
+            btnAddToCurrentlyReading.setOnClickListener(v -> {
+                book.setCurrentlyReading(false);
+                bookViewModel.update(book);
+                Toast.makeText(BookActivity.this, "Removed", Toast.LENGTH_SHORT).show();
+                handleCurrentlyReadingBooks(book);
+            });
+        } else {
+            btnAddToCurrentlyReading.setBackgroundColor(getResources().getColor(R.color.purple_500));
+            btnAddToCurrentlyReading.setTextColor(getResources().getColor(R.color.white));
+            btnAddToCurrentlyReading.setText(R.string.add_to_reading_button_label);
+
+            btnAddToCurrentlyReading.setOnClickListener(v -> {
+                book.setCurrentlyReading(true);
+                bookViewModel.update(book);
+                Toast.makeText(BookActivity.this, "Book Added to Currently Reading", Toast.LENGTH_SHORT).show();
+                handleCurrentlyReadingBooks(book);
+            });
+        }
+    }
+
+    /**
+     * Enable and Disable Button
+     * Add/Remove Flag the book object as Already Read (isAlreadyRead)
+     *
+     * @param book BookEntity Object to flag
      */
     private void handleAlreadyRead(BookEntity book) {
-        //TODO: Convert these methods to RoomDatabase
-        /*
-        if (exists) {
-            btnAddToWantToRead.setEnabled(false);
-        } else {
-            btnAddToWantToRead.setOnClickListener(v -> {
-                if (Utils.getInstance(BookActivity.this).addToWantToRead(book)) {
-                    Toast.makeText(BookActivity.this, "Book Added to Want to Read", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(BookActivity.this, WantToReadBookActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(BookActivity.this, "Something wrong happened, try again", Toast.LENGTH_SHORT).show();
-                }
+        if (book.isAlreadyRead()) {
+            btnAddToAlreadyRead.setBackgroundColor(getResources().getColor(R.color.button_disabled_bg));
+            btnAddToAlreadyRead.setTextColor(getResources().getColor(R.color.button_disabled_text));
+            btnAddToAlreadyRead.setText(R.string.is_already_reading_button_label);
+
+            btnAddToAlreadyRead.setOnClickListener(v -> {
+                book.setAlreadyRead(false);
+                bookViewModel.update(book);
+                Toast.makeText(BookActivity.this, "Removed", Toast.LENGTH_SHORT).show();
+                handleAlreadyRead(book);
             });
-        }
-         */
-    }
-
-    /*
-    private void handleWantToReadBooks(Book book) {
-        ArrayList<Book> books = Utils.getInstance(this).getWantToReadBooks();
-        boolean exists = false;
-        for (Book b : books) {
-            if (b.getId() == book.getId()) {
-                exists = true;
-                break;
-            }
-        }
-
-        if (exists) {
-            btnAddToWantToRead.setEnabled(false);
         } else {
-            btnAddToWantToRead.setOnClickListener(v -> {
-                if (Utils.getInstance(BookActivity.this).addToWantToRead(book)) {
-                    Toast.makeText(BookActivity.this, "Book Added to Want to Read", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(BookActivity.this, WantToReadBookActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(BookActivity.this, "Something wrong happened, try again", Toast.LENGTH_SHORT).show();
-                }
+            btnAddToAlreadyRead.setBackgroundColor(getResources().getColor(R.color.purple_500));
+            btnAddToAlreadyRead.setTextColor(getResources().getColor(R.color.white));
+            btnAddToAlreadyRead.setText(R.string.add_to_already_read_button_label);
+
+            btnAddToAlreadyRead.setOnClickListener(v -> {
+                book.setAlreadyRead(true);
+                bookViewModel.update(book);
+                Toast.makeText(BookActivity.this, "Book added to Already Read", Toast.LENGTH_SHORT).show();
+                handleAlreadyRead(book);
             });
         }
     }
 
-    private void handleCurrentlyReadingBooks(Book book) {
-        ArrayList<Book> books = Utils.getInstance(this).getCurrentlyReadingBooks();
-        boolean exists = false;
-        for (Book b : books) {
-            if (b.getId() == book.getId()) {
-                exists = true;
-                break;
-            }
-        }
-
-        if (exists) {
-            btnAddToCurrentlyReading.setEnabled(false);
-        } else {
-            btnAddToCurrentlyReading.setOnClickListener(v -> {
-                if (Utils.getInstance(BookActivity.this).addToCurrentlyReading(book)) {
-                    Toast.makeText(BookActivity.this, "Book Added to Currently Reading", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(BookActivity.this, CurrentlyReadingBookActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(BookActivity.this, "Something wrong happened, try again", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
-    private void handleFavoriteBooks(Book book) {
-        ArrayList<Book> books = Utils.getInstance(this).getFavoriteBooks();
-        boolean exists = false;
-        for (Book b : books) {
-            if (b.getId() == book.getId()) {
-                exists = true;
-                break;
-            }
-        }
-
-        if (exists) {
-            btnAddToFavorites.setEnabled(false);
-        } else {
-            btnAddToFavorites.setOnClickListener(v -> {
-                if (Utils.getInstance(BookActivity.this).addToFavorite(book)) {
-                    Toast.makeText(BookActivity.this, "Book Added", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(BookActivity.this, FavoriteBookActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(BookActivity.this, "Something wrong happened, try again", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
+    /**
+     * Enable and Disable Button
+     * Add/Remove Flag the book object as Wishlisted (isWantToRead)
+     *
+     * @param book BookEntity Object to flag
      */
+    private void handleWantToReadBooks(BookEntity book) {
+        if (book.isWantToRead()) {
+            btnAddToWantToRead.setBackgroundColor(getResources().getColor(R.color.button_disabled_bg));
+            btnAddToWantToRead.setTextColor(getResources().getColor(R.color.button_disabled_text));
+            btnAddToWantToRead.setText(R.string.is_want_to_read_button_label);
+
+            btnAddToWantToRead.setOnClickListener(v -> {
+                book.setWantToRead(false);
+                bookViewModel.update(book);
+                Toast.makeText(BookActivity.this, "Removed", Toast.LENGTH_SHORT).show();
+                handleWantToReadBooks(book);
+            });
+        } else {
+            btnAddToWantToRead.setBackgroundColor(getResources().getColor(R.color.purple_500));
+            btnAddToWantToRead.setTextColor(getResources().getColor(R.color.white));
+            btnAddToWantToRead.setText(R.string.add_to_wishlist_button_label);
+
+            btnAddToWantToRead.setOnClickListener(v -> {
+                book.setWantToRead(true);
+                bookViewModel.update(book);
+                Toast.makeText(BookActivity.this, "Book added to Wishlist", Toast.LENGTH_SHORT).show();
+                handleWantToReadBooks(book);
+            });
+        }
+    }
+
+    /**
+     * Enable and Disable Button
+     * Add/Remove Flag the book object as Favorited (isFavorite)
+     *
+     * @param book BookEntity Object to flag
+     */
+    private void handleFavoriteBooks(BookEntity book) {
+        if (book.isFavorite()) {
+            btnAddToFavorites.setBackgroundColor(getResources().getColor(R.color.button_disabled_bg));
+            btnAddToFavorites.setTextColor(getResources().getColor(R.color.button_disabled_text));
+            btnAddToFavorites.setText(R.string.is_favorite_button_label);
+
+            btnAddToFavorites.setOnClickListener(v -> {
+                book.setFavorite(false);
+                bookViewModel.update(book);
+                Toast.makeText(BookActivity.this, "Removed", Toast.LENGTH_SHORT).show();
+                handleFavoriteBooks(book);
+            });
+        } else {
+            btnAddToFavorites.setBackgroundColor(getResources().getColor(R.color.purple_500));
+            btnAddToFavorites.setTextColor(getResources().getColor(R.color.white));
+            btnAddToFavorites.setText(R.string.add_to_favorites_button_label);
+
+            btnAddToFavorites.setOnClickListener(v -> {
+                book.setFavorite(true);
+                bookViewModel.update(book);
+                Toast.makeText(BookActivity.this, "Book Added to Favorites", Toast.LENGTH_SHORT).show();
+                handleFavoriteBooks(book);
+            });
+        }
+    }
 
     private void setData(BookEntity book) {
         txtBookNameFull.setText(book.getName());
@@ -264,6 +301,36 @@ public class BookActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDIT_BOOK_REQUEST && resultCode == RESULT_OK) {
+            int bookId = data.getIntExtra(AddEditBookActivity.EXTRA_BOOK_ID, -1);
+            if (bookId != -1) {
+
+                String bookName = data.getStringExtra(AddEditBookActivity.EXTRA_BOOK_NAME);
+                String author = data.getStringExtra(AddEditBookActivity.EXTRA_AUTHOR);
+                int pages = data.getIntExtra(AddEditBookActivity.EXTRA_PAGES, -1);
+                String shortDescription = data.getStringExtra(AddEditBookActivity.EXTRA_SHORT_DESCRIPTION);
+                String longDescription = data.getStringExtra(AddEditBookActivity.EXTRA_LONG_DESCRIPTION);
+                String imageUrl = data.getStringExtra(AddEditBookActivity.EXTRA_IMAGE_URL);
+
+                BookEntity book = new BookEntity(bookName, author, pages, imageUrl, shortDescription, longDescription);
+                book.setId(bookId);
+                book.setCurrentlyReading(data.getBooleanExtra(AddEditBookActivity.EXTRA_IS_CURRENTLY_READING, false));
+                book.setAlreadyRead(data.getBooleanExtra(AddEditBookActivity.EXTRA_IS_ALREADY_READ, false));
+                book.setWantToRead(data.getBooleanExtra(AddEditBookActivity.EXTRA_IS_WANT_TO_READ, false));
+                book.setFavorite(data.getBooleanExtra(AddEditBookActivity.EXTRA_IS_FAVORITE, false));
+                bookViewModel.update(book);
+
+                Toast.makeText(this, "Book updated", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Book cannot be updated", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

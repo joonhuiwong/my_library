@@ -32,6 +32,18 @@ public interface BookDao {
     @Query("SELECT * FROM book_table ORDER BY name ASC")
     LiveData<List<BookEntity>> getAllBooks();
 
+    @Query("SELECT * FROM book_table WHERE isCurrentlyReading=1 ORDER BY name ASC")
+    LiveData<List<BookEntity>> getAllCurrentlyReadingBooks();
+
+    @Query("SELECT * FROM book_table WHERE isAlreadyRead=1 ORDER BY name ASC")
+    LiveData<List<BookEntity>> getAllAlreadyReadBooks();
+
+    @Query("SELECT * FROM book_table WHERE isWantToRead=1 ORDER BY name ASC")
+    LiveData<List<BookEntity>> getAllWantToReadBooks();
+
+    @Query("SELECT * FROM book_table WHERE isFavorite=1 ORDER BY name ASC")
+    LiveData<List<BookEntity>> getAllFavoriteBooks();
+
     @Query("SELECT * FROM book_table WHERE id = :bookId")
     LiveData<BookEntity> getBook(int bookId);
 
