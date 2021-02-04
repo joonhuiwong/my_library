@@ -1,4 +1,4 @@
-package com.joonhuiwong.mylibrary;
+package com.joonhuiwong.mylibrary.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,26 +6,32 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class WantToReadBookActivity extends AppCompatActivity {
+import com.joonhuiwong.mylibrary.R;
+import com.joonhuiwong.mylibrary.adapters.BookAdapter;
+import com.joonhuiwong.mylibrary.viewmodel.BookViewModel;
 
-    public static final String ACTIVITY_NAME = "wantToReadBooks";
+public class AlreadyReadBookActivity extends AppCompatActivity {
+
+    private BookViewModel bookViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_want_to_read_book);
+        setContentView(R.layout.activity_already_read_book);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView recyclerView = findViewById(R.id.wantToReadBookRecView);
-        BookRecViewAdapter adapter = new BookRecViewAdapter(this, ACTIVITY_NAME);
+        RecyclerView recyclerView = findViewById(R.id.alreadyReadBookRecView);
+        BookAdapter adapter = new BookAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter.setBooks(Utils.getWantToReadBooks());
+        bookViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(BookViewModel.class);
+        bookViewModel.getAlreadyReadBooks().observe(this, books -> adapter.setBooks(books));
     }
 
     @Override

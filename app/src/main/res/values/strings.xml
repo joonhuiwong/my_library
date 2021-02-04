@@ -22,7 +22,7 @@
     <string name="footer_copyright">Developed by Joon Hui</string>
     <string name="add_to_reading_button_label">Add to Reading List</string>
     <string name="add_to_wishlist_button_label">Add to Wishlist</string>
-    <string name="add_to_already_read_button_label">Already Read</string>
+    <string name="add_to_already_read_button_label">Add to Already Read</string>
     <string name="add_to_favorites_button_label">Add To Favorites</string>
     <string name="book_name_label">Book Name:</string>
     <string name="book_name_text">This is my Book Name</string>
@@ -30,6 +30,19 @@
     <string name="pages_label">Pages</string>
     <string name="pages_text">150</string>
     <string name="description_label">Description</string>
-    <string name="long_description_text">Long Description in Here</string>
+    <string name="long_description_text">Long Description</string>
     <string name="book_cover_text">Book Cover</string>
+    <string name="add_new_book_activity_label">Add New Book</string>
+    <string name="book_name_required">Book Name (required)</string>
+    <string name="author_required">Author (required)</string>
+    <string name="pages_required">Pages (required)</string>
+    <string name="save">Save</string>
+    <string name="delete_all_books">Delete All Books</string>
+    <string name="delete_book">Delete Book</string>
+    <string name="edit_book_label">Edit</string>
+    <string name="book_cover_url">Book Cover URL</string>
+    <string name="is_reading_button_label">Reading</string>
+    <string name="is_already_reading_button_label">Already Read</string>
+    <string name="is_want_to_read_button_label">Wishlisted</string>
+    <string name="is_favorite_button_label">Favorited</string>
 </resources>

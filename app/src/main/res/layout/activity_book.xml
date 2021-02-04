@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookActivity">
+    tools:context=".activities.BookActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,9 +27,11 @@
 
             <Button
                 android:id="@+id/btnAddToCurrentlyReading"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/add_to_reading_button_label"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +42,7 @@
                 android:id="@+id/btnAddToWantToRead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/add_to_wishlist_button_label"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/btnAddToCurrentlyReading"
@@ -51,7 +53,7 @@
                 android:id="@+id/btnAddToAlreadyRead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/add_to_already_read_button_label"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/btnAddToWantToRead"
@@ -62,7 +64,7 @@
                 android:id="@+id/btnAddToFavorites"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/add_to_favorites_button_label"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/btnAddToAlreadyRead"
@@ -75,6 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/book_name_label"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
@@ -94,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/author_label"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/txtBookNameLabel" />
 
@@ -112,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/pages_label"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/txtAuthorLabel" />
 
@@ -126,19 +131,22 @@
 
             <TextView
                 android:id="@+id/txtShortDescriptionFull"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/description_label"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/txtPagesLabel" />
 
             <TextView
                 android:id="@+id/txtLongDescriptionFull"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/long_description_text"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -150,14 +158,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="205dp" />
+                app:layout_constraintGuide_begin="200dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="316dp" />
+                app:layout_constraintGuide_begin="250dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
@@ -179,8 +187,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="400dp" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_edit_book"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="32dp"
+        android:contentDescription="@string/edit_book_label"
+        android:src="@drawable/ic_edit" />
 
 </RelativeLayout>
