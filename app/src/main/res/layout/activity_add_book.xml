@@ -11,35 +11,35 @@
         android:id="@+id/editTextBookName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Book Name (required)"
+        android:hint="@string/book_name_required"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/editTextAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Author (required)"
+        android:hint="@string/author_required"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/editTextPages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Pages (required)"
+        android:hint="@string/pages_required"
         android:inputType="number" />
 
     <EditText
         android:id="@+id/editTextShortDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Short Description"
+        android:hint="@string/short_description"
         android:inputType="textMultiLine" />
 
     <EditText
         android:id="@+id/editTextLongDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Long Description"
+        android:hint="@string/long_description_text"
         android:inputType="textMultiLine" />
 
 </LinearLayout>

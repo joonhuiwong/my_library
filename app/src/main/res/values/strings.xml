@@ -30,7 +30,13 @@
     <string name="pages_label">Pages</string>
     <string name="pages_text">150</string>
     <string name="description_label">Description</string>
-    <string name="long_description_text">Long Description in Here</string>
+    <string name="long_description_text">Long Description</string>
     <string name="book_cover_text">Book Cover</string>
     <string name="add_new_book_activity_label">Add New Book</string>
+    <string name="book_name_required">Book Name (required)</string>
+    <string name="author_required">Author (required)</string>
+    <string name="pages_required">Pages (required)</string>
+    <string name="save">Save</string>
+    <string name="delete_all_books">Delete All Books</string>
+    <string name="delete_book">Delete Book</string>
 </resources>

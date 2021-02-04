@@ -4,6 +4,6 @@
     <item
         android:id="@+id/delete_book"
         android:icon="@drawable/ic_delete"
-        android:title="Delete Book"
+        android:title="@string/delete_book"
         app:showAsAction="ifRoom" />
 </menu>
