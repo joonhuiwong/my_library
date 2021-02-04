@@ -8,4 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pink">#E15B88</color>
+
+    <color name="button_disabled_bg">#E0E0E0</color>
+    <color name="button_disabled_text">#989898</color>
 </resources>
