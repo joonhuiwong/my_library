@@ -45,7 +45,10 @@ public class BookRepository {
         return allBooks;
     }
 
-    //TODO: Sync or Async?
+    public void deleteBookById(int bookId) {
+        BookDatabase.databaseWriteExecutor.execute(() -> bookDao.deleteBookById(bookId));
+    }
+
     public LiveData<BookEntity> getBook(int bookId) {
         return bookDao.getBook(bookId);
     }
@@ -53,4 +56,6 @@ public class BookRepository {
     public BookEntity getBookSync(int bookId) {
         return bookDao.getBookSync(bookId);
     }
+
+
 }

@@ -174,6 +174,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
         notifyDataSetChanged(); //TODO Can replace with something better when more knowledgeable
     }
 
+    public BookEntity getBookAt(int position) {
+        return books.get(position);
+    }
+
     public class BookHolder extends RecyclerView.ViewHolder {
         private final CardView parent;
         private final ImageView imgBook;

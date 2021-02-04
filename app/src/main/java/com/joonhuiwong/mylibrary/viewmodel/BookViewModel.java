@@ -38,6 +38,10 @@ public class BookViewModel extends AndroidViewModel {
         repository.deleteAllBooks();
     }
 
+    public void deleteBookById(int bookId) {
+        repository.deleteBookById(bookId);
+    }
+
     public LiveData<List<BookEntity>> getAllBooks() {
         return allBooks;
     }
@@ -49,4 +53,5 @@ public class BookViewModel extends AndroidViewModel {
     public BookEntity getBookSync(int bookId) {
         return repository.getBookSync(bookId);
     }
+
 }

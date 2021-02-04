@@ -40,7 +40,7 @@
                 android:id="@+id/btnAddToWantToRead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/add_to_wishlist_button_label"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/btnAddToCurrentlyReading"
@@ -51,7 +51,7 @@
                 android:id="@+id/btnAddToAlreadyRead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/add_to_already_read_button_label"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/btnAddToWantToRead"
@@ -62,7 +62,7 @@
                 android:id="@+id/btnAddToFavorites"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/add_to_favorites_button_label"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/btnAddToAlreadyRead"
@@ -126,19 +126,22 @@
 
             <TextView
                 android:id="@+id/txtShortDescriptionFull"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/description_label"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/txtPagesLabel" />
 
             <TextView
                 android:id="@+id/txtLongDescriptionFull"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/long_description_text"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -157,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="316dp" />
+                app:layout_constraintGuide_begin="250dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"

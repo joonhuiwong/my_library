@@ -2,6 +2,8 @@ package com.joonhuiwong.mylibrary.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -30,6 +33,8 @@ public class BookActivity extends AppCompatActivity {
 
     private BookViewModel bookViewModel;
 
+    private int bookId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +46,7 @@ public class BookActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (null != intent) {
-            int bookId = intent.getIntExtra(BOOK_ID_KEY, -1);
+            this.bookId = intent.getIntExtra(BOOK_ID_KEY, -1);
             if (bookId != -1) {
                 bookViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(BookViewModel.class);
                 bookViewModel.getAllBooks().observe(this, new Observer<List<BookEntity>>() {
@@ -56,8 +61,6 @@ public class BookActivity extends AppCompatActivity {
                             //handleWantToReadBooks(incomingBook);
                             //handleCurrentlyReadingBooks(incomingBook);
                             //handleFavoriteBooks(incomingBook);
-                        } else {
-                            Toast.makeText(BookActivity.this, "Failed to Load Book for some reason. Try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -223,11 +226,44 @@ public class BookActivity extends AppCompatActivity {
         imgBookFull = findViewById(R.id.imgBookFull);
     }
 
+    private boolean deleteBook() {
+        if (bookId != -1) {
+            bookViewModel.deleteBookById(bookId);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.book_menu, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.delete_book:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to delete this book?");
+                builder.setNegativeButton("No", (dialog, which) -> {
+                });
+                builder.setPositiveButton("Yes", (dialog, which) -> {
+                    if (deleteBook()) {
+                        onBackPressed();
+                        Toast.makeText(this, "Book Deleted.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Failed to delete book. Try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.create().show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

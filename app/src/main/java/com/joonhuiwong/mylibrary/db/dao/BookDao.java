@@ -26,6 +26,9 @@ public interface BookDao {
     @Query("DELETE FROM book_table")
     void deleteAllBooks();
 
+    @Query("DELETE FROM book_table WHERE id = :bookId")
+    void deleteBookById(int bookId);
+
     @Query("SELECT * FROM book_table ORDER BY name ASC")
     LiveData<List<BookEntity>> getAllBooks();
 
