@@ -1,13 +1,14 @@
 package com.joonhuiwong.mylibrary.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.joonhuiwong.mylibrary.R;
 import com.joonhuiwong.mylibrary.utils.Utils;
 
@@ -18,6 +19,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Utils.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "Application Opened");
+        Utils.getInstance(this).getFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+
         setContentView(R.layout.activity_main);
 
         initViews();
@@ -30,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
         initButtonOnClickListener(MainActivity.this, btnFavorite, FavoriteBookActivity.class);
 
         btnAbout.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            Utils.getInstance(MainActivity.this).logItemSelected("About Button");
+            android.app.AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(getString(R.string.app_name));
             builder.setMessage("Designed by Joon Hui Wong following and inspired by free guides & courses online.\n" +
                     "This application is purely for educational purposes.");
@@ -43,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             builder.create().show();
         });
 
-        Utils.getInstance();
     }
 
     /**
@@ -55,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initButtonOnClickListener(Context mContext, Button button, Class<?> mClass) {
         button.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("source", this.getClass().getSimpleName());
+            Utils.getInstance(MainActivity.this).logScreenView(mClass.getSimpleName(), bundle);
             Intent intent = new Intent(mContext, mClass);
             startActivity(intent);
         });
