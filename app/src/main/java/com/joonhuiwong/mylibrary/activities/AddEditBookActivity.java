@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.joonhuiwong.mylibrary.R;
 import com.joonhuiwong.mylibrary.utils.Utils;
 
@@ -51,6 +52,7 @@ public class AddEditBookActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_edit_book);
 
         editTextBookName = findViewById(R.id.editTextBookName);
@@ -62,18 +64,31 @@ public class AddEditBookActivity extends AppCompatActivity {
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
-        Intent intent = getIntent();
+        Bundle bundle = new Bundle();
 
+        Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_BOOK_ID)) {
+            String bookName = intent.getStringExtra(EXTRA_BOOK_NAME);
+
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Edit Book");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, bookName);
+
+            int bookId = getIntent().getIntExtra(EXTRA_BOOK_ID, -1);
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(bookId));
+
             setTitle("Edit Book");
-            editTextBookName.setText(intent.getStringExtra(EXTRA_BOOK_NAME));
+
+            editTextBookName.setText(bookName);
             editTextAuthor.setText(intent.getStringExtra(EXTRA_AUTHOR));
             editTextPages.setText(String.valueOf(intent.getIntExtra(EXTRA_PAGES, -1)));
             editTextShortDescription.setText(intent.getStringExtra(EXTRA_SHORT_DESCRIPTION));
             editTextLongDescription.setText(intent.getStringExtra(EXTRA_LONG_DESCRIPTION));
             editTextImageUrl.setText(intent.getStringExtra(EXTRA_IMAGE_URL));
-        }
 
+        } else {
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Add Book");
+        }
+        Utils.getInstance(this).logEvent(Utils.ADD_EDIT_BOOK_ACTIVITY_KEY, bundle);
     }
 
     private void saveBook() {
@@ -92,7 +107,7 @@ public class AddEditBookActivity extends AppCompatActivity {
                 pagesString.trim().isEmpty()) {
             Toast.makeText(this, "Please insert required fields", Toast.LENGTH_SHORT).show();
             return;
-        } else if (!Utils.getInstance().isDigit(pagesString)) {
+        } else if (!Utils.getInstance(this).isDigit(pagesString)) {
             Toast.makeText(this, "Pages has to be a number", Toast.LENGTH_SHORT).show();
             return;
         }

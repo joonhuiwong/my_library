@@ -18,8 +18,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.joonhuiwong.mylibrary.R;
 import com.joonhuiwong.mylibrary.db.entity.BookEntity;
+import com.joonhuiwong.mylibrary.utils.Utils;
 import com.joonhuiwong.mylibrary.viewmodel.BookViewModel;
 
 import java.util.List;
@@ -85,6 +87,11 @@ public class BookActivity extends AppCompatActivity {
                         handleWantToReadBooks(currentBook);
                         handleCurrentlyReadingBooks(currentBook);
                         handleFavoriteBooks(currentBook);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, currentBook.getName());
+                        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, currentBook.getId());
+                        Utils.getInstance(this).logEvent(Utils.OPEN_BOOK_DETAIL_KEY, bundle);
                     }
                 });
             }
