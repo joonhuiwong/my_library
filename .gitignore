@@ -7,11 +7,12 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.idea/terminal.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
-/.idea/terminal.xml
-/app/release
+/app/release/app-release.apk
+/app/release/output-metadata.json

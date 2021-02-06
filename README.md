@@ -24,3 +24,6 @@ For Room Database Reference:
 - https://developer.android.com/codelabs/android-training-livedata-viewmodel#0
 - https://github.com/android/architecture-components-samples/tree/main/BasicSample
 
+For Firebase:
+- https://firebase.google.com/docs/android/setup
+- https://www.youtube.com/watch?v=brPF0qRvcLU
