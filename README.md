@@ -3,6 +3,12 @@ Practice Application
 
 This project is a practice project for educational purposes.
 
+Features:
+- Ability to add/update/delete book entries.
+- Ability to flag individual books into different lists like reading list and wishlist.
+
+----
+
 The application is part of an Android Development for Beginners course that I am following to learn the basics of Android development.
 
 Even with extensive Java and Java EE experience from years prior, the advent of mobile applications and modern web design introduced a lot of new terms and concepts that are fairly foreign to one that has been stuck with working with legacy software/code for years.
