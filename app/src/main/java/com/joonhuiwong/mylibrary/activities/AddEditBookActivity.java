@@ -46,7 +46,6 @@ public class AddEditBookActivity extends AppCompatActivity {
     private EditText editTextShortDescription;
     private EditText editTextLongDescription;
     private EditText editTextImageUrl;
-
     //TODO: Proper Image handling
 
     @Override
@@ -91,6 +90,9 @@ public class AddEditBookActivity extends AppCompatActivity {
         Utils.getInstance(this).logEvent(Utils.ADD_EDIT_BOOK_ACTIVITY_KEY, bundle);
     }
 
+    /**
+     * Prepares the new/existing book for saving after validation
+     */
     private void saveBook() {
         String bookName = editTextBookName.getText().toString();
         String author = editTextAuthor.getText().toString();

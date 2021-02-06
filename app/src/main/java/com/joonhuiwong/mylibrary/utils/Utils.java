@@ -25,6 +25,12 @@ public class Utils {
         return instance;
     }
 
+    /**
+     * Checks a string that may or may not be a number
+     *
+     * @param s incoming string
+     * @return true if a number, false if not a number
+     */
     public boolean isDigit(String s) {
         try {
             Integer.parseInt(s);

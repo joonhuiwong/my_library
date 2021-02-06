@@ -43,8 +43,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
     @Override
     public void onBindViewHolder(@NonNull BookHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: Called");
-        holder.textBookName.setText(books.get(position).getName());
 
+        holder.textBookName.setText(books.get(position).getName());
+        holder.txtAuthor.setText(books.get(position).getAuthor());
+        holder.txtDescription.setText(books.get(position).getShortDesc());
         if (books.get(position).getImageUrl().isEmpty()) {
             Glide.with(mContext)
                     .asBitmap()
@@ -58,16 +60,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
                     .into(holder.imgBook);
         }
 
-
         holder.parent.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, BookActivity.class);
             intent.putExtra(BookActivity.BOOK_ID_KEY, books.get(position).getId());
             mContext.startActivity(intent);
         });
 
-        holder.txtAuthor.setText(books.get(position).getAuthor());
-        holder.txtDescription.setText(books.get(position).getShortDesc());
-
+        // Expandable CardView
         if (books.get(position).isExpanded()) {
             TransitionManager.beginDelayedTransition(holder.parent);
             holder.expandedRelativeLayout.setVisibility(View.VISIBLE);
@@ -86,7 +85,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
 
     public void setBooks(List<BookEntity> books) {
         this.books = books;
-        notifyDataSetChanged(); //TODO Can replace with something better when more knowledgeable
+        notifyDataSetChanged();
     }
 
     public class BookHolder extends RecyclerView.ViewHolder {

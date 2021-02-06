@@ -60,7 +60,6 @@ public abstract class BookDatabase extends RoomDatabase {
 
                 Log.d("RoomDatabase.Callback", "initData: Done");
             });
-
         }
     };
 
